@@ -12,12 +12,11 @@ import com.example.recipeapppaparaproject.utils.Constants.MEAL_ID
 fun NavGraph(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = Screens.HomeScreen.route) {
-       /* composable(Screens.HomeScreen.route) {
+        composable(Screens.HomeScreen.route) {
            HomeScreen(
                 navController = navController
             )
         }
-
         composable(
             Screens.MealDetails.route,
             arguments = listOf(navArgument(MEAL_ID) {
@@ -29,6 +28,6 @@ fun NavGraph(navController: NavHostController) {
                     navController.popBackStack()
                 }
             )
-        }*/
+        }
     }
 }
