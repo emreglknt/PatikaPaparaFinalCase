@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
+    id("com.google.dagger.hilt.android")
+    id("kotlinx-serialization")
+
 }
 
 android {
@@ -101,6 +105,8 @@ dependencies {
     implementation ("androidx.compose.material:material:1.4.2")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.4.2")
     implementation ("androidx.navigation:navigation-compose:2.5.3")
+
+    // Lottie
     implementation ("com.airbnb.android:lottie-compose:6.0.0")
 
     // Register
