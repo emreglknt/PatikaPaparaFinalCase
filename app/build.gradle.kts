@@ -1,10 +1,10 @@
 plugins {
-    alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
     id("kotlinx-serialization")
+    id("com.android.application")
 
 }
 
@@ -75,14 +75,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
-
-
-
-
     implementation ("com.airbnb.android:lottie-compose:6.4.0")
     implementation ("androidx.navigation:navigation-compose:2.5.3")
-    implementation ("com.airbnb.android:lottie-compose:6.0.0")
 
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
 
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation ("androidx.activity:activity-compose:1.5.1")
@@ -90,7 +86,7 @@ dependencies {
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation (libs.firebase.auth)
-
+    implementation ("com.google.firebase:firebase-bom:32.8.1")
     // Coroutines
     implementation(libs.coroutines.play.services)
 

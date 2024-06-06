@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -55,10 +57,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.recipeapppaparaproject.R
 import com.example.recipeapppaparaproject.presentation.AuthViewModel.AuthViewModel
 import kotlinx.coroutines.launch
@@ -86,9 +84,19 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
         color = Color.White.copy(alpha = 0.3f)
     ) {
         Column {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                AnimationComponent(lottieAnimation = R.raw.anim)
-            }
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillBounds
+                    ,
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(250.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+
             Spacer(modifier = Modifier.height(5.dp))
             HeadingTextComponent(heading = "Login")
             Spacer(modifier = Modifier.height(10.dp))
@@ -106,7 +114,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                                 //firebase kullanıcı girişi
                                 viewModel.login(email, password)
                                 if (loginResult != null) {
-                                    navController.navigate("main_screen")
+                                    navController.navigate("home_screen")
                                 } else {
                                     Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT)
                                         .show()
@@ -127,15 +135,6 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
     }
 }
 
-@Composable
-fun AnimationComponent(lottieAnimation: Int) {
-
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(lottieAnimation))
-    LottieAnimation(
-        composition = composition,
-        iterations = LottieConstants.IterateForever
-    )
-}
 
 
 @Composable
