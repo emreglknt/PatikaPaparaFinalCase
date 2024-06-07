@@ -20,22 +20,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.example.recipeapppaparaproject.R
 import com.example.recipeapppaparaproject.data.model.RecipeResponse.Result
+
+import com.example.recipeapppaparaproject.nav.Screens
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hiltViewModel()) {
@@ -44,9 +41,9 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
     val categories = listOf("Breakfast","Dinner","Dessert","Pasta","Soups","Salads","Beef","Chicken")
 
     Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController)
-        }
+//        bottomBar = {
+//            BottomNavigationBar(navController)
+//        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -97,7 +94,9 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             items(recipes.size) { index ->
-                                RecipeCard(recipes[index])
+                                RecipeCard(recipes[index]) { recipeId ->
+                                    navController.navigate( Screens.RECIPE_DETAIL + "/$recipeId")
+                                }
                             }
                         }
                     } else {
@@ -194,13 +193,14 @@ fun CategoryCard(category: String, onClick: () -> Unit) {
 
 
 @Composable
-fun RecipeCard(recipe: Result) {
+fun RecipeCard(recipe: Result,onClick: (Int) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
+            .clickable {onClick(recipe.id)}
     ) {
         Row(
             modifier = Modifier
@@ -232,7 +232,7 @@ fun RecipeCard(recipe: Result) {
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    BottomNavigation(
+   BottomNavigation(
         backgroundColor = Color.Green,
         contentColor = Color.White
     ) {
@@ -252,7 +252,7 @@ fun BottomNavigationBar(navController: NavController) {
             icon = { Icon(Icons.Default.ExitToApp, contentDescription = "Logout") },
             label = { Text("Logout") },
             selected = false,
-            onClick = { /* Handle profile click */ }
+            onClick = { /* Handle logout click */ }
         )
     }
 }

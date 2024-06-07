@@ -20,6 +20,7 @@ class RecipeRepositoryImpl @Inject constructor(
 
     }
 
+    //details
     override suspend fun getRecipeDetails(id: Int): Flow<ApiResult<RecipeDetailResponse>> {
         return apiFlow { api.getRecipeDetailsById(id) }
     }

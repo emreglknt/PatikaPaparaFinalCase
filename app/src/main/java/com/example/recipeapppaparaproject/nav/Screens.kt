@@ -1,16 +1,11 @@
 package com.example.recipeapppaparaproject.nav
 
 
-sealed class Screens(val route: String) {
+ object Screens {
 
-    object HomeScreen : Screens("home")
+    const val RECIPE_DETAIL= "recipe_detail"
 
-    /*
-        object MealDetails : Screens("MealDetails/{$mealId}"){
-            fun passMealId(mealId: Int): String {
-                return "MealDetails/$mealId"
-            }
-        }
-    */
+     const val HomeScreen= "home"
+     const val LoginScreen= "login_screen"
 
-}
+ }

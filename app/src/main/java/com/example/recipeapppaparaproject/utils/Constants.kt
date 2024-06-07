@@ -8,6 +8,6 @@ object Constants {
     //değişecek
     const val API_KEY = "c9611c51dcbc432f8fbb18865576048a"
 
-    const val MEAL_ID = "mealId"
+    const val RECIPE_ID = "recipeId"
 
 }

@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.recipeapppaparaproject.nav.NavGraph
 import com.example.recipeapppaparaproject.presentation.home.HomeScreen
 import com.example.recipeapppaparaproject.presentation.login.LoginScreen
 import com.example.recipeapppaparaproject.presentation.register.RegisterScreen
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
             RecipeAppPaparaProjectTheme {
                 val navController = rememberNavController()
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    setupNavGraph(navController = navController)
+                    NavGraph(navController = navController)
                 }
             }
         }
@@ -58,16 +59,7 @@ fun setupNavGraph(navController: NavHostController) {
             SplashScreen(navController = navController)
         }*/
 
-        composable("login_screen") {
-            LoginScreen(navController = navController)
-        }
 
-        composable("register_screen") {
-            RegisterScreen(navController = navController)
-        }
-        composable("home_screen") {
-            HomeScreen(navController = navController)
-        }
 
 
     }
