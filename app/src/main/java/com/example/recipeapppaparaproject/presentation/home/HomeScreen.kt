@@ -95,7 +95,9 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                         ) {
                             items(recipes.size) { index ->
                                 RecipeCard(recipes[index]) { recipeId ->
-                                    navController.navigate( Screens.RECIPE_DETAIL + "/$recipeId")
+                                    recipeId.let {
+                                        navController.navigate(Screens.RECIPE_DETAIL + "/$it")
+                                    }
                                 }
                             }
                         }

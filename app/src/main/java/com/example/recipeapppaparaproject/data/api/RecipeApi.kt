@@ -19,7 +19,7 @@ interface RecipeApi {
     //search recipes
     @GET("recipes/complexSearch")
     suspend fun getAllRecipes(
-        @Query("number") number: Int = 70,
+        @Query("number") number: Int = 20,
         @Query("offset") offset: Int = 0,
         @Query("apiKey") apiKey: String=API_KEY,
     ):Response<RecipeResponse>
@@ -28,7 +28,7 @@ interface RecipeApi {
     @GET("recipes/complexSearch")
     suspend fun getRecipesByCategory(
         @Query("query") query: String,
-        @Query("number") number: Int = 40,
+        @Query("number") number: Int = 20,
         @Query("offset") offset: Int = 0,
         @Query("apiKey") apiKey: String=API_KEY,
     ):Response<RecipeResponse>
