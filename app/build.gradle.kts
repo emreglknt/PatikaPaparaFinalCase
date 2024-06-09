@@ -127,6 +127,7 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     kapt(libs.androidx.room.compiler)
 
+    implementation ("com.google.accompanist:accompanist-swiperefresh:0.23.1")
 
 
 

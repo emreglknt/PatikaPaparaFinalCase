@@ -26,6 +26,8 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
@@ -39,7 +41,12 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
     var searchText by remember { mutableStateOf("") }
     val recipeState by homeViewModel.recipeState.collectAsState()
     val categories = listOf("Breakfast","Dinner","Dessert","Pasta","Soups","Salads","Beef","Chicken")
-
+    Image(
+        painter = painterResource(id = R.drawable.foodpattern),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.FillBounds
+    )
     Scaffold(
 //        bottomBar = {
 //            BottomNavigationBar(navController)
@@ -51,7 +58,15 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                 .fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(16.dp))
-
+            IconButton(
+                onClick = { navController.navigate("favourite_screen") },
+                modifier = Modifier.padding(end = 16.dp) // Add padding if needed
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Favorite Recipes"
+                )
+            }
             SearchBar(searchText) {
                 searchText = it
                 homeViewModel.getRecipesByCategory(it)

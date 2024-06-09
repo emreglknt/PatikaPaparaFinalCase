@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.example.recipeapppaparaproject.R
@@ -50,23 +52,32 @@ import com.google.firebase.auth.auth
 @Composable
 fun RecipeDetailScreen(
     recDetailViewModel: RecipeDetailViewModel = hiltViewModel(),
+    onBackMealsScreen: () -> Unit,
     favoriteRecipeViewModel: FavoriteRecipesViewModel = hiltViewModel(),
-    onBackMealsScreen: () -> Unit
 ) {
     val recipeDetailState by recDetailViewModel.selectRecipe.collectAsState()
     val currentUser = Firebase.auth.currentUser
 
+    var isFavorite by remember { mutableStateOf(false) }
+// Observe favorite recipes
+    val favoriteRecipes by favoriteRecipeViewModel.favoriteRecipes.observeAsState(emptyList())
+    LaunchedEffect(favoriteRecipes) {
+        if (recipeDetailState is RecipeDetailState.Success) {
+            val recipeDetails = (recipeDetailState as RecipeDetailState.Success).meals
+            isFavorite = favoriteRecipes.any { it.recipeid == recipeDetails.id && it.userId == currentUser?.uid }
+        }
+    }
 
     Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                title = {
-//                    Text(text = "Recipe Detail")
-//                },
-//                backgroundColor = Color.White,
-//                contentColor = Color.Black,
-//            )
-//        }
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "Recipe Detail")
+                },
+                backgroundColor = Color.White,
+                contentColor = Color.Black,
+            )
+        }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -80,8 +91,13 @@ fun RecipeDetailScreen(
 
                 is RecipeDetailState.Success -> {
                     val recipeDetails = (recipeDetailState as RecipeDetailState.Success).meals
-                    RecipeDetailCompose(recipeDetails, onBackMealsScreen,currentUser)
-
+                    RecipeDetailCompose(
+                        recipeDetails,
+                        onBackMealsScreen,
+                        currentUser,
+                        isFavorite,
+                        favoriteRecipeViewModel
+                    )
                 }
 
                 is RecipeDetailState.Error -> {
@@ -101,16 +117,9 @@ fun RecipeDetailCompose(
     recipeDetails: RecipeDetailResponse,
     onBackMealsScreen: () -> Unit,
     currentUser: FirebaseUser?,
-    favoriteRecipeViewModel: FavoriteRecipesViewModel = hiltViewModel(),
+    isFavorite: Boolean,
+    favoriteRecipeViewModel: FavoriteRecipesViewModel
 ) {
-
-    var isFavorite by remember { mutableStateOf(false) }
-    LaunchedEffect(favoriteRecipeViewModel.favoriteRecipes.value) {
-        isFavorite = favoriteRecipeViewModel.favoriteRecipes.value?.any {
-            it.recipeid == recipeDetails.id && it.userId == currentUser?.uid
-        }?: false
-    }
-
 
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -170,10 +179,10 @@ fun RecipeDetailCompose(
 
                             onClick = { currentUser?.let { user ->
                                 if (isFavorite) {
-                                    favoriteRecipeViewModel.addFavoriteRecipe(it, user.uid)
+                                    favoriteRecipeViewModel.removeFavoriteRecipe(it.id.toString(), user.uid)
                                 }
                                 else {
-                                    favoriteRecipeViewModel.removeFavoriteRecipe(it.id.toString(), user.uid)
+                                    favoriteRecipeViewModel.addFavoriteRecipe(it, user.uid)
                                 }
 
                                  }},
@@ -185,7 +194,7 @@ fun RecipeDetailCompose(
                                 )
                         ) {
                             Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
+                                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = "Favorite",
                                 tint = if (isFavorite) Color.Red else Color.White
                             )
@@ -200,6 +209,11 @@ fun RecipeDetailCompose(
                             .align(Alignment.BottomCenter)
                             .padding(10.dp)
                     )
+
+
+
+
+
                 }
 
 

@@ -19,8 +19,7 @@ class FavoriteRecipesViewModel @Inject constructor(
     private val _favoriteRecipes = MutableLiveData<List<FavoriRecipes>>()
     val favoriteRecipes: LiveData<List<FavoriRecipes>> = _favoriteRecipes
 
-    private val _snackbarMessage = MutableLiveData<String>()
-    val snackbarMessage: LiveData<String> = _snackbarMessage
+
     fun getFavoriteRecipes(userId: String) {
         viewModelScope.launch {
             repository.getFavoriteRecipes(userId).collect { recipes ->
